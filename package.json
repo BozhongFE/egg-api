@@ -1,0 +1,8 @@
+{
+  "name": "@bz/egg-api",
+  "version": "0.1.0",
+  "description": "",
+  "eggPlugin": {
+    "name": "api"
+  }
+}
