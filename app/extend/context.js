@@ -15,7 +15,7 @@ module.exports = {
     }
 
     const json = {
-      [config.errnoField]: code === 0 ? 0 : config.defaultErrno,
+      [config.errnoField]: code >= 0 ? code : config.defaultErrno,
     };
     if (code === 0) {
       json.data = data;

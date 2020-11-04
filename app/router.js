@@ -9,7 +9,7 @@ function getMiddleware(pathname, app) {
   if (!app.config.api || !app.config.api.router) return [];
   const middleware = [];
   for (const item of app.config.api.router) {
-    if (new RegExp(item.pathMatch).test(pathname)) {
+    if (item.pathMatch && new RegExp(item.pathMatch).test(pathname)) {
       const itemMiddleware = item.middleware || [];
       if (item.isCoverMiddleware) middleware.splice(0, middleware.length, ...itemMiddleware);
       else middleware.push(...itemMiddleware);
