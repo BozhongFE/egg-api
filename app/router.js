@@ -95,6 +95,8 @@ module.exports = (app) => {
     // 定义已存在接口路由
     defineRouterDeep(item, apiController, `controller${item.replace(/\//g, '.')}`);
     // 不存在的走异常路由
-    defineRouter('all', `${item}/*.json`, controller.api.error.notFound, 'controller.api.error.notFound');
+    if (controller.error && controller.error.notFound) {
+      defineRouter('all', `${item}/*.json`, controller.error.notFound, 'controller.error.notFound');
+    }
   }
 }

@@ -20,6 +20,14 @@ exports.ucenter = {
 }
 ```
 
++ 配置路由 `app/router.js`
+```js
+const buildRouter = require('@bz/egg-api/app/router');
+module.exports = app => {
+  buildRouter(app);
+};
+```
+
 ## 方法注入
 
 ### ctx.auto(code, data/msg) 自动格式化接口返回内容
@@ -90,7 +98,7 @@ GET /api/user/info.json => controller.api.user.info.get
 
 ```js
 config.api = {
-  // debug: 输出路由走向
+  // debug: 输出路由走向，需要修改 egg 的日志级别为 Debug，https://eggjs.org/zh-cn/core/logger.html
   debug: false,
   // 支持此插件的 controller 目录（格式：/xxx or /xxx/xxx）
   controller: ['/api'],
@@ -151,3 +159,25 @@ config.api = {
   ]
 }
 ```
+
+### 异常处理的 controller
+需要自己在当前项目下新建一个异常 controller 文件：`controller/error.js`
+
+```js
+const Controller = require('egg').Controller;
+
+class ApiErrorController extends Controller {
+  // 处理不存在的接口路由
+  async notFound() {
+    const { ctx } = this;
+    ctx.auto(1000, 'Not Found Request Method');
+  }
+}
+
+module.exports = ApiErrorController;
+```
+
+### 内部重置方法
+
++ app.validator.validate
+内部重写 `validate` 方法，通过 `rule` 自动格式化数据
